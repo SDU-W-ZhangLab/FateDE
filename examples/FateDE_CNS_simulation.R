@@ -132,7 +132,178 @@ Fit_t=function(exp_value){
 }
 
 
+###############################
+# figure plot circular diagram
+###############################
+library('ComplexHeatmap')
 
+library('circlize')
+
+library("RColorBrewer")
+
+library(dendextend)
+
+#转化matrix格式矩阵及数据归一化
+cir1 <- as.matrix(abs(astrocyte_oligodendrocyt[,3:6]))
+
+cir2 <- as.matrix(abs(neuron_astrocyt[,3:6]))
+
+cir3 <- as.matrix(abs(neuron_oligodendrocyt[,3:6]))
+
+
+#颜色设定：
+mycol=colorRamp2(c(0.5,0.9,1),c("blue","white","red"))
+circos.clear()
+
+#cir1分组热图绘制#
+
+ann_row = data.frame(pathway=c(rep("pathway1",3),rep("pathway2",3),rep("pathway3",3)))#对行进行注释，用于后续的热图分裂
+
+row.names(ann_row) = rownames(cir1)
+
+ann_row <- as.matrix(ann_row)#在circlize函数中，需要为matrix
+
+#分组绘图
+
+circos.par(gap.after=c(2,2,30)) #circos.par()调整圆环首尾间的距离，数值越大，距离越宽#让分裂的一个口大一点，可以添加行信息
+
+circos.heatmap(cir1,col=mycol,
+
+               dend.side="inside",#dend.side：控制行聚类树的方向，inside为显示在圆环内圈，outside为显示在圆环外圈
+
+               rownames.side="outside",#rownames.side：控制矩阵行名的方向,与dend.side相同；但注意二者不能在同一侧，必须一内一外
+
+               track.height = 0.2, #轨道的高度，数值越大圆环越粗
+
+               rownames.col="black",
+
+               bg.border="black", #背景边缘颜色
+
+               split = ann_row,#用行注释分裂热图
+
+               show.sector.labels = F,
+
+               rownames.cex=0.8,#字体大小
+
+               rownames.font=0.5,#字体粗细
+
+               cluster=FALSE,#cluster=TRUE为对行聚类，cluster=FALSE则不显示聚类
+
+               dend.track.height=0.18,#调整行聚类树的高度
+
+               dend.callback=function(dend,m,si) {#dend.callback：用于聚类树的回调，当需要对聚类树进行重新排序，或者添加颜色时使用包含的三个参数：dend：当前扇区的树状图；m：当前扇区对应的子矩阵；si：当前扇区的名称
+
+                 color_branches(dend,k=3,col=1:10)#color_branches():修改聚类树颜色#聚类树颜色改为1，即单色/黑色
+
+               }
+
+)
+lg=Legend(title="Legend",col_fun=mycol,direction = c("horizontal"))  #horizontal vertical
+grid.draw(lg)
+
+circos.clear()
+mycol=colorRamp2(c(0.5,0.9,1),c("blue","white","red"))
+#cir2分组热图绘制#
+
+ann_row = data.frame(pathway=c(rep("pathway1",4),rep("pathway2",4),rep("pathway3",4),rep("pathway4",4)))#对行进行注释，用于后续的热图分裂
+
+row.names(ann_row) = rownames(cir2)
+
+ann_row <- as.matrix(ann_row)#在circlize函数中，需要为matrix
+
+#分组绘图
+
+circos.par(gap.after=c(2,2,2,30)) #circos.par()调整圆环首尾间的距离，数值越大，距离越宽#让分裂的一个口大一点，可以添加行信息
+
+circos.heatmap(cir2,col=mycol,
+
+               dend.side="inside",#dend.side：控制行聚类树的方向，inside为显示在圆环内圈，outside为显示在圆环外圈
+
+               rownames.side="outside",#rownames.side：控制矩阵行名的方向,与dend.side相同；但注意二者不能在同一侧，必须一内一外
+
+               track.height = 0.2, #轨道的高度，数值越大圆环越粗
+
+               rownames.col="black",
+
+               bg.border="black", #背景边缘颜色
+
+               split = ann_row,#用行注释分裂热图
+
+               show.sector.labels = F,
+
+               rownames.cex=0.8,#字体大小
+
+               rownames.font=0.5,#字体粗细
+
+               cluster=FALSE,#cluster=TRUE为对行聚类，cluster=FALSE则不显示聚类
+
+               dend.track.height=0.18,#调整行聚类树的高度
+
+               dend.callback=function(dend,m,si) {#dend.callback：用于聚类树的回调，当需要对聚类树进行重新排序，或者添加颜色时使用包含的三个参数：dend：当前扇区的树状图；m：当前扇区对应的子矩阵；si：当前扇区的名称
+
+                 color_branches(dend,k=4,col=1:10)#color_branches():修改聚类树颜色#聚类树颜色改为1，即单色/黑色
+
+               }
+
+)
+
+lg=Legend(title="Legend",col_fun=mycol,direction = c("horizontal"))  #horizontal vertical
+grid.draw(lg)
+
+
+
+
+
+
+mycol=colorRamp2(c(0.5,0.9,1),c("blue","white","red"))
+circos.clear()
+
+#cir3分组热图绘制#
+
+ann_row = data.frame(pathway=c(rep("pathway1",4),rep("pathway2",4),rep("pathway3",4),rep("pathway4",4)))#对行进行注释，用于后续的热图分裂
+
+row.names(ann_row) = rownames(cir3)
+
+ann_row <- as.matrix(ann_row)#在circlize函数中，需要为matrix
+
+#分组绘图
+
+circos.par(gap.after=c(2,2,2,30)) #circos.par()调整圆环首尾间的距离，数值越大，距离越宽#让分裂的一个口大一点，可以添加行信息
+
+circos.heatmap(cir3,col=mycol,
+
+               dend.side="inside",#dend.side：控制行聚类树的方向，inside为显示在圆环内圈，outside为显示在圆环外圈
+
+               rownames.side="outside",#rownames.side：控制矩阵行名的方向,与dend.side相同；但注意二者不能在同一侧，必须一内一外
+
+               track.height = 0.2, #轨道的高度，数值越大圆环越粗
+
+               rownames.col="black",
+
+               bg.border="black", #背景边缘颜色
+
+               split = ann_row,#用行注释分裂热图
+
+               show.sector.labels = F,
+
+               rownames.cex=0.8,#字体大小
+
+               rownames.font=0.5,#字体粗细
+
+               cluster=FALSE,#cluster=TRUE为对行聚类，cluster=FALSE则不显示聚类
+
+               dend.track.height=0.18,#调整行聚类树的高度
+
+               dend.callback=function(dend,m,si) {#dend.callback：用于聚类树的回调，当需要对聚类树进行重新排序，或者添加颜色时使用包含的三个参数：dend：当前扇区的树状图；m：当前扇区对应的子矩阵；si：当前扇区的名称
+
+                 color_branches(dend,k=3,col=1:10)#color_branches():修改聚类树颜色#聚类树颜色改为1，即单色/黑色
+
+               }
+
+)
+
+lg=Legend(title="Legend",col_fun=mycol,direction = c("horizontal"))  #horizontal vertical
+grid.draw(lg)
 
 
 
